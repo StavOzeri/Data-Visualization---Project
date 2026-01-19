@@ -170,9 +170,10 @@ def create_graphs(data, title_suffix, color_main):
     fig4.add_trace(go.Scatter(x=curr_exp[experience_col], y=curr_exp['salary_usd'], mode='lines+markers',
                               line=dict(color=color_main, width=3), name=title_suffix))
     if not df.empty:
+        # CHANGED COLOR FROM 'green' TO 'grey'
         fig4.add_trace(
             go.Scatter(x=global_exp_avg[experience_col], y=global_exp_avg['salary_usd'], mode='lines+markers',
-                       line=dict(color='green', dash='dot', width=1), name='Global Avg'))
+                       line=dict(color='grey', dash='dot', width=1), name='Global Avg'))
     fig4.update_layout(height=350, margin=dict(t=40, b=0), paper_bgcolor="rgba(0,0,0,0)",
                        plot_bgcolor="rgba(0,0,0,0)", yaxis_tickformat='$', showlegend=True,
                        title=f"Pay Ladder ({title_suffix})")
@@ -184,13 +185,14 @@ def create_graphs(data, title_suffix, color_main):
 # --- Comparison Line Chart ---
 def create_comparison_line_chart(df_left, name_left, color_left, df_right, name_right, color_right):
     fig = go.Figure()
-    # Global Green Line
+    # Global Grey Line
     if not df.empty:
+        # CHANGED COLOR FROM 'green' TO 'grey'
         fig.add_trace(go.Scatter(
             x=global_exp_avg[experience_col],
             y=global_exp_avg['salary_usd'],
             mode='lines',
-            line=dict(color='green', dash='dot', width=2),
+            line=dict(color='grey', dash='dot', width=2),
             name='Global Average'
         ))
 
@@ -232,10 +234,10 @@ else:
         view_mode = st.radio("Select View Mode:", ("Comparator", "Employee Residence", "Company Location"),
                              horizontal=True)
     with c2:
-        if st.button("🌎 Global Countries", use_container_width=True):
+        if st.button("🌎 Global Countries", width="stretch"):
             st.session_state['show_global_top10'] = not st.session_state['show_global_top10']
     with c3:
-        if st.button("🔄 Reset Selection", use_container_width=True):
+        if st.button("🔄 Reset Selection", width="stretch"):
             reset_app()
             st.rerun()
 
@@ -260,7 +262,8 @@ else:
             top_10.columns = ['Country', 'Company Count']
             st.info("Top 10 Countries by Company Location")
 
-        st.dataframe(top_10, use_container_width=True, hide_index=True)
+        # REPLACED use_container_width -> width='stretch'
+        st.dataframe(top_10, width="stretch", hide_index=True)
 
     # -----------------------------------
     # MODE 1: COMPARATOR (SPLIT VIEW)
@@ -300,7 +303,8 @@ else:
         fig_map.update_layout(height=450, margin={"r": 0, "t": 0, "l": 0, "b": 0}, legend=dict(y=0.99, x=0.01))
 
         # --- SELECTION SAFEGUARD (Modified for old Streamlit versions) ---
-        selection = st.plotly_chart(fig_map, on_select="rerun", use_container_width=True)
+        # REPLACED use_container_width -> width='stretch'
+        selection = st.plotly_chart(fig_map, on_select="rerun", width="stretch")
 
         clicked_country = None
         # Safe access to selection data
@@ -324,17 +328,19 @@ else:
             with col_L:
                 st.subheader("Global Employees")
                 g = create_graphs(df, "Global Emp", "#EF553B")
-                st.plotly_chart(g['top_roles'], use_container_width=True)
-                st.plotly_chart(g['top_countries'], use_container_width=True)
-                st.plotly_chart(g['scatter'], use_container_width=True)
-                st.plotly_chart(g['pay_ladder'], use_container_width=True)
+                # REPLACED use_container_width -> width='stretch'
+                st.plotly_chart(g['top_roles'], width="stretch")
+                st.plotly_chart(g['top_countries'], width="stretch")
+                st.plotly_chart(g['scatter'], width="stretch")
+                st.plotly_chart(g['pay_ladder'], width="stretch")
             with col_R:
                 st.subheader("Global Companies")
                 g = create_graphs(df, "Global Comp", "#1E88E5")
-                st.plotly_chart(g['top_roles'], use_container_width=True)
-                st.plotly_chart(g['top_countries'], use_container_width=True)
-                st.plotly_chart(g['scatter'], use_container_width=True)
-                st.plotly_chart(g['pay_ladder'], use_container_width=True)
+                # REPLACED use_container_width -> width='stretch'
+                st.plotly_chart(g['top_roles'], width="stretch")
+                st.plotly_chart(g['top_countries'], width="stretch")
+                st.plotly_chart(g['scatter'], width="stretch")
+                st.plotly_chart(g['pay_ladder'], width="stretch")
         else:
             # Specific
             primary = st.session_state['primary_country']
@@ -389,20 +395,23 @@ else:
                 st.subheader(name_L)
                 g = create_graphs(df_L, name_L, color_L)
                 if g:
-                    for k in g: st.plotly_chart(g[k], use_container_width=True)
+                    # REPLACED use_container_width -> width='stretch'
+                    for k in g: st.plotly_chart(g[k], width="stretch")
             with cR:
                 if not df_R.empty:
                     st.subheader(name_R)
                     g = create_graphs(df_R, name_R, color_R)
                     if g:
-                        for k in g: st.plotly_chart(g[k], use_container_width=True)
+                        # REPLACED use_container_width -> width='stretch'
+                        for k in g: st.plotly_chart(g[k], width="stretch")
                 else:
                     st.info("Select a second country from the map.")
 
             st.divider()
             if not df_L.empty and (not df_R.empty or st.session_state['compare_mode'] == "Standard View"):
+                # REPLACED use_container_width -> width='stretch'
                 st.plotly_chart(create_comparison_line_chart(df_L, name_L, color_L, df_R, name_R, color_R),
-                                use_container_width=True)
+                                width="stretch")
 
     # -----------------------------------
     # MODE 2: SINGLE VIEWS (FIXED LAYOUT)
@@ -429,7 +438,8 @@ else:
             fig_map.update_layout(height=600, margin={"r": 0, "t": 0, "l": 0, "b": 0})
 
             # --- SELECTION SAFEGUARD (Modified for old Streamlit versions) ---
-            selection = st.plotly_chart(fig_map, on_select="rerun", use_container_width=True)
+            # REPLACED use_container_width -> width='stretch'
+            selection = st.plotly_chart(fig_map, on_select="rerun", width="stretch")
 
         selected_country = None
         if isinstance(selection, dict) and selection.get("selection") and selection["selection"].get("points"):
@@ -463,12 +473,13 @@ else:
 
                 # Row 1
                 with r1_c1:
-                    st.plotly_chart(g['top_roles'], use_container_width=True)
+                    # REPLACED use_container_width -> width='stretch'
+                    st.plotly_chart(g['top_roles'], width="stretch")
                 with r1_c2:
-                    st.plotly_chart(g['top_countries'], use_container_width=True)
+                    st.plotly_chart(g['top_countries'], width="stretch")
 
                 # Row 2
                 with r2_c1:
-                    st.plotly_chart(g['scatter'], use_container_width=True)
+                    st.plotly_chart(g['scatter'], width="stretch")
                 with r2_c2:
-                    st.plotly_chart(g['pay_ladder'], use_container_width=True)
+                    st.plotly_chart(g['pay_ladder'], width="stretch")
