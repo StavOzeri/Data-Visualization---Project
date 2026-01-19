@@ -43,10 +43,10 @@ if df is None:
 # Format: "Label": {"column": "col_name", "agg": "function", "color": "hex"}
 # Note: agg="size" ignores column, agg="nunique" counts unique values
 METRICS_CONFIG = {
-    "Average Salary (USD)": {"column": "salary_usd", "agg": "mean", "color": "#DD8452"},  # Orange
-    "Job Count": {"column": None, "agg": "size", "color": "#4C72B0"},  # Blue
+    "Average Salary (USD)": {"column": "salary_usd", "agg": "mean", "color": "#F1C40F"},  # Yellow
+    "Job Count": {"column": None, "agg": "size", "color": "#E377C2"},  # Pink
     "Years of Experience": {"column": "years_experience", "agg": "mean", "color": "#8172B2"}, # Purple
-    "Benefits Score": {"column": "benefits_score", "agg": "mean", "color": "#64B5CD"},  # Cyan
+    "Benefits Score": {"column": "benefits_score", "agg": "mean", "color": "#8D6E63"},  # brown
     "Remote Work Ratio (%)": {"column": "remote_ratio", "agg": "mean", "color": "#55A868"}  # Green
 }
 
